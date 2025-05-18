@@ -17,15 +17,22 @@ class ProgressPage extends StatelessWidget {
             child: BarChart(
               BarChartData(
                 borderData: FlBorderData(show: false),
-                titlesData: FlTitlesData(
-                  leftTitles: SideTitles(showTitles: true),
-                  bottomTitles: SideTitles(
-                    showTitles: true,
-                    getTitles: (value) {
-                      return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][value.toInt()];
-                    },
-                  ),
-                ),
+               titlesData: FlTitlesData(
+  leftTitles: AxisTitles(
+    sideTitles: SideTitles(showTitles: true),
+  ),
+  bottomTitles: AxisTitles(
+    sideTitles: SideTitles(
+      showTitles: true,
+      getTitlesWidget: (value, meta) {
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        final label = value.toInt() >= 0 && value.toInt() < 7 ? days[value.toInt()] : '';
+        return Text(label, style: TextStyle(fontSize: 10));
+      },
+    ),
+  ),
+),
+
                 barGroups: List.generate(7, (i) {
                   return BarChartGroupData(x: i, barRods: [
                     BarChartRodData(toY: weeklyData[i], width: 15),
